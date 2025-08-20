@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Beginner's Guide to Nutrition: Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#1a2a4a',
+                        'brand-gold': '#d4a017',
+                        'brand-card': '#2c3e6b',
+                        'light-text': '#E0E0E0',
+                    },
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #1a2a4a;
+            color: #E0E0E0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .flowchart-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .flowchart-arrow {
+            color: #d4a017;
+            font-size: 2.5rem;
+            line-height: 1;
+            margin: 0 1rem;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d4a017;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal-content h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1a2a4a;
+        }
+        .modal-content h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: #1a2a4a;
+        }
+        .modal-content ul, .modal-content ol {
+            list-style-position: inside;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-content p {
+            margin-bottom: 1rem;
+        }
+        .nutrition-summary {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #d4a017;
+        }
+    </style>
+</head>
+<body class="text-light-text">
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto text-gray-800">
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 id="modal-title" class="text-2xl font-bold text-brand-blue">AI Generated Result</h2>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+            </div>
+            <div id="modal-content" class="p-6 modal-content">
+                <div id="modal-loader" class="flex justify-center items-center h-40">
+                    <div class="loader"></div>
+                </div>
+                <div id="modal-text" class="whitespace-pre-wrap"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-brand-gold mb-2">Nutrition 101: Your Visual Guide</h1>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">Understanding the building blocks of your diet to fuel your body and achieve your goals.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="md:col-span-2 lg:col-span-3 bg-brand-card rounded-lg shadow-lg p-6 flex flex-col md:flex-row items-center justify-around text-center">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl font-semibold text-white">Energy Balance is Key</h2>
+                    <p class="text-gray-300">Calories are the fuel. Your weight is determined by the balance between calories consumed and calories burned.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <div class="p-4 bg-blue-900/50 rounded-lg">
+                        <p class="text-3xl font-bold text-blue-400">&lt;</p>
+                        <p class="font-semibold text-white">Weight Loss</p>
+                    </div>
+                    <div class="p-4 bg-green-900/50 rounded-lg">
+                        <p class="text-3xl font-bold text-green-400">=</p>
+                        <p class="font-semibold text-white">Maintenance</p>
+                    </div>
+                    <div class="p-4 bg-yellow-900/50 rounded-lg">
+                        <p class="text-3xl font-bold text-yellow-400">&gt;</p>
+                        <p class="font-semibold text-white">Weight Gain</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 md:col-span-2 bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-4 text-brand-gold">Caloric Density of Macros</h2>
+                <p class="text-center text-gray-300 mb-4">Fats are more than twice as energy-dense as protein and carbs. This is why portion sizes for high-fat foods are smaller.</p>
+                <div class="chart-container">
+                    <canvas id="macroCaloriesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-4 text-brand-gold">Protein Powerhouse Comparison</h2>
+                 <p class="text-center text-gray-300 mb-4">Protein is the builder, essential for muscle repair and growth. See how different common food sources stack up per 100g serving.</p>
+                <div class="chart-container h-80 max-h-[400px]">
+                    <canvas id="proteinSourcesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-4 text-brand-gold">Carbohydrates: Your Body's Fuel</h2>
+                <p class="text-center text-gray-300 mb-4">Focus on complex carbs for sustained energy. They digest slowly, keeping you fueled and full for longer.</p>
+                <div class="chart-container">
+                    <canvas id="carbTypesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-4 text-brand-gold">Healthy Fats: The Supporter</h2>
+                <p class="text-center text-gray-300 mb-4">Essential for hormone production and vitamin absorption. Prioritize unsaturated fats for heart and brain health.</p>
+                <ul class="space-y-3 text-light-text">
+                    <li class="flex items-center"><span class="text-2xl mr-3">🥑</span> Avocados, Olive Oil</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🥜</span> Nuts and Seeds</li>
+                    <li class="flex items-center"><span class="text-2xl mr-3">🐟</span> Fatty Fish (Salmon, Mackerel)</li>
+                </ul>
+                <p class="text-center text-sm text-gray-400 mt-4">Limit saturated and trans fats found in fried and processed foods.</p>
+            </div>
+
+            <div class="bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-4 text-brand-gold">Why Track? The Power of Awareness</h2>
+                <p class="text-center text-gray-300 mb-4">Tracking isn't about restriction; it's a tool to learn about your habits and understand portion sizes.</p>
+                 <ul class="space-y-3 text-light-text">
+                    <li class="flex items-start"><span class="text-2xl mr-3">📏</span> <strong>Understand Portions:</strong> See what a real serving looks like.</li>
+                    <li class="flex items-start"><span class="text-2xl mr-3">⚖️</span> <strong>Ensure Balance:</strong> Are you getting enough of each macro?</li>
+                    <li class="flex items-start"><span class="text-2xl mr-3">🎯</span> <strong>Reach Your Goals:</strong> Use data to make effective changes.</li>
+                </ul>
+            </div>
+            
+            <div class="md:col-span-2 lg:col-span-3 bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-6 text-brand-gold">Your 4-Step Guide to Tracking</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="flowchart-step bg-brand-gold opacity-90">1. Estimate</div>
+                        <p class="mt-2 w-32 text-gray-300">Use an online TDEE calculator</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="transform rotate-90 md:hidden flowchart-arrow">&rarr;</div>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="flowchart-step bg-brand-gold opacity-70">2. Get Tools</div>
+                        <p class="mt-2 w-32 text-gray-300">Food scale & tracking app</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="transform rotate-90 md:hidden flowchart-arrow">&rarr;</div>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="flowchart-step bg-white/20">3. Log Food</div>
+                        <p class="mt-2 w-32 text-gray-300">Weigh in grams before cooking</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">&rarr;</div>
+                    <div class="transform rotate-90 md:hidden flowchart-arrow">&rarr;</div>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="flowchart-step bg-white/10">4. Review</div>
+                        <p class="mt-2 w-32 text-gray-300">Look for patterns, don't judge</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-3 bg-brand-card rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-center mb-6 text-brand-gold">Tips for Sustainable Success</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🗓️</span>
+                        <h3 class="font-semibold text-lg text-white">Plan Ahead</h3>
+                        <p class="text-gray-300 text-sm">Log tomorrow's food today to remove guesswork.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">💾</span>
+                        <h3 class="font-semibold text-lg text-white">Save Meals</h3>
+                        <p class="text-gray-300 text-sm">Use your app's feature for quick, one-click logging.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">⚖️</span>
+                        <h3 class="font-semibold text-lg text-white">The 80/20 Rule</h3>
+                        <p class="text-gray-300 text-sm">Progress over perfection. Consistency is key.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-5xl mb-2">🥗</span>
+                        <h3 class="font-semibold text-lg text-white">Focus on Whole Foods</h3>
+                        <p class="text-gray-300 text-sm">They are more nutrient-dense and easier to track.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-3 bg-black/20 rounded-lg shadow-lg p-6 text-white">
+                <h2 class="text-3xl font-bold text-center mb-6 text-brand-gold">AI-Powered Nutrition Tools</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-center mb-4">AI Meal Plan Generator</h3>
+                        <p class="text-center mb-4">Select a goal and let our AI create a sample one-day meal plan to inspire you.</p>
+                        <div class="flex flex-wrap justify-center gap-2 mb-4" id="meal-plan-options">
+                            <button data-goal="Balanced" class="bg-brand-gold text-brand-blue font-semibold py-2 px-4 rounded-full hover:bg-brand-gold/80 transition">Balanced Day</button>
+                            <button data-goal="High Protein" class="bg-brand-gold text-brand-blue font-semibold py-2 px-4 rounded-full hover:bg-brand-gold/80 transition">High Protein</button>
+                            <button data-goal="Vegetarian" class="bg-brand-gold text-brand-blue font-semibold py-2 px-4 rounded-full hover:bg-brand-gold/80 transition">Vegetarian</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-center mb-4">AI Recipe Creator</h3>
+                        <p class="text-center mb-4">Have some ingredients but no ideas? List them below and get a simple, healthy recipe.</p>
+                        <textarea id="ingredients-input" class="w-full h-24 p-2 rounded-md text-gray-800 bg-gray-200" placeholder="e.g., chicken breast, broccoli, kumara, lemon"></textarea>
+                        <button id="get-recipe-btn" class="mt-4 w-full bg-brand-gold text-brand-blue font-bold py-2 px-4 rounded-full hover:bg-brand-gold/80 transition text-lg">✨ Get Recipe</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+        
+        <footer class="text-center mt-12 py-4 border-t border-gray-700">
+            <p class="text-gray-400">Start with one small change today. Consistency is always more important than perfection.</p>
+        </footer>
+    </div>
+
+    <script>
+        Chart.defaults.color = '#E0E0E0';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            family: "'Montserrat', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    bodyFont: {
+                        family: "'Montserrat', sans-serif"
+                    },
+                    titleFont: {
+                        family: "'Montserrat', sans-serif"
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#E0E0E0' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                x: {
+                    ticks: { color: '#E0E0E0' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+            }
+        };
+
+        const pieDoughnutOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            family: "'Montserrat', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    bodyFont: {
+                        family: "'Montserrat', sans-serif"
+                    },
+                    titleFont: {
+                        family: "'Montserrat', sans-serif"
+                    }
+                }
+            }
+        };
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            });
+            lines.push(currentLine.trim());
+            return lines.filter(line => line.length > 0);
+        };
+
+        const macroCaloriesCtx = document.getElementById('macroCaloriesChart').getContext('2d');
+        new Chart(macroCaloriesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Protein (4 cal/g)', 'Carbs (4 cal/g)', 'Fats (9 cal/g)'],
+                datasets: [{
+                    label: 'Calories per Gram',
+                    data: [4, 4, 9],
+                    backgroundColor: ['#d4a017', '#FFFFFF', '#b0bec5'],
+                    borderColor: '#2c3e6b',
+                    borderWidth: 3
+                }]
+            },
+            options: pieDoughnutOptions
+        });
+
+        const proteinSourcesCtx = document.getElementById('proteinSourcesChart').getContext('2d');
+        const proteinLabels = ['Chicken Breast', 'Lean Beef', 'Salmon', 'Tofu (Firm)', 'Greek Yogurt (0% Fat)', 'Lentils (Cooked)'];
+        new Chart(proteinSourcesCtx, {
+            type: 'bar',
+            data: {
+                labels: proteinLabels.map(wrapLabel),
+                datasets: [{
+                    label: 'Protein (g) per 100g',
+                    data: [31, 26, 20, 13.5, 10, 9],
+                    backgroundColor: ['#d4a017', '#c89215', '#bd8a13', '#b28211', '#a77a0f', '#9c720d'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 1,
+                    barPercentage: 0.8,
+                    categoryPercentage: 0.8
+                }]
+            },
+            options: { 
+                ...chartDefaultOptions, 
+                indexAxis: 'y',
+                layout: {
+                    padding: {
+                        left: 25
+                    }
+                },
+                scales: {
+                    ...chartDefaultOptions.scales,
+                    y: {
+                        ...chartDefaultOptions.scales.y,
+                        ticks: {
+                            ...chartDefaultOptions.scales.y.ticks,
+                            callback: function(value) {
+                                return this.getLabelForValue(value);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const carbTypesCtx = document.getElementById('carbTypesChart').getContext('2d');
+        new Chart(carbTypesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Complex Carbs (Target)', 'Simple Carbs (Limit)'],
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#d4a017', '#FFFFFF'],
+                    borderColor: '#2c3e6b',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                ...pieDoughnutOptions,
+                plugins: {
+                    ...pieDoughnutOptions.plugins,
+                    tooltip: {
+                        ...pieDoughnutOptions.plugins.tooltip,
+                        callbacks: {
+                            ...pieDoughnutOptions.plugins.tooltip.callbacks,
+                            label: function(context) {
+                                return ` ${context.label}: ${context.parsed}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gemini API and Modal Functionality
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalLoader = document.getElementById('modal-loader');
+        const modalText = document.getElementById('modal-text');
+
+        const openModal = () => modal.classList.remove('hidden');
+        const closeModal = () => modal.classList.add('hidden');
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        const callGeminiAPI = async (prompt, isJson = false) => {
+            // This check prevents errors when running the file locally, as Netlify Functions are only available on a server.
+            if (window.location.protocol.startsWith('blob') || window.location.protocol.startsWith('file')) {
+                return { error: 'LOCAL_PREVIEW' };
+            }
+
+            try {
+                const response = await fetch('/.netlify/functions/get-nutrition-info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, isJson })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Netlify function error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                return result.text;
+
+            } catch (error) {
+                console.error("Failed to call Netlify function:", error);
+                return null;
+            }
+        };
+        
+        const displayResultInModal = (title, content) => {
+            modalTitle.textContent = title;
+            const disclaimer = `<p class="text-xs text-gray-500 mt-4 italic"><strong>Important:</strong> This is an AI-generated estimation and should be used as a guide only. For personalized advice, please consult a Registered Dietitian or Accredited Nutritionist.</p>`;
+            modalText.innerHTML = content + disclaimer;
+            modalLoader.classList.add('hidden');
+            modalText.classList.remove('hidden');
+        };
+
+        const showLoadingInModal = () => {
+            modalText.classList.add('hidden');
+            modalLoader.classList.remove('hidden');
+            openModal();
+        };
+
+        document.getElementById('meal-plan-options').addEventListener('click', async (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const goal = e.target.dataset.goal;
+                modalTitle.textContent = `✨ ${goal} Meal Plan`;
+                showLoadingInModal();
+                
+                const prompt = `Generate a simple one-day sample meal plan for a beginner in New Zealand focused on a "${goal}" diet. Include breakfast, lunch, dinner, and one snack. For each meal, provide an estimated breakdown of calories, protein, carbs, and fat. Also provide a total for the day. Keep the meals simple with common ingredients found in New Zealand (e.g., lamb, kumara, kiwifruit) and avoid items that are not readily available there, such as turkey. Format the response with clear headings for each meal (e.g., ### Breakfast) and use markdown for lists and bolding.`;
+                
+                const result = await callGeminiAPI(prompt);
+                
+                if (result && result.error === 'LOCAL_PREVIEW') {
+                    displayResultInModal("Feature Unavailable in Preview", "<p>AI features are disabled in this local preview because they require a secure server connection.</p><p><strong>This is expected behavior.</strong> Once you deploy this site to Netlify, these features will work correctly.</p>");
+                    return;
+                }
+                
+                if (result) {
+                    const formattedResult = result
+                        .replace(/### (.*?)\n/g, '<h3>$1</h3>')
+                        .replace(/\* (.*?)\n/g, '<li>$1</li>')
+                        .replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>')
+                        .replace(/<\/li><li>/g, '</li></ul><ul><li>')
+                        .replace(/<\/h3><li>/g, '</h3><ul><li>') + '</ul>';
+                    displayResultInModal(`✨ ${goal} Meal Plan`, formattedResult);
+                } else {
+                    displayResultInModal("Error", "<p>Sorry, I couldn't generate a meal plan right now. Please try again later.</p>");
+                }
+            }
+        });
+
+        document.getElementById('get-recipe-btn').addEventListener('click', async () => {
+            const ingredients = document.getElementById('ingredients-input').value;
+            if (!ingredients.trim()) {
+                modalTitle.textContent = "Input Required";
+                displayResultInModal("Input Required", "<p>Please enter some ingredients in the text box before requesting a recipe.</p>");
+                openModal();
+                return;
+            }
+            
+            modalTitle.textContent = "✨ Your Custom Recipe";
+            showLoadingInModal();
+
+            const prompt = `Create a simple, healthy recipe using the following ingredients: ${ingredients}. The user is in New Zealand, so please assume common NZ products and measurements. Provide a short, appealing description, a list of ingredients, step-by-step instructions, and an estimated nutritional breakdown (calories, protein, carbs, and fat).`;
+            
+            const result = await callGeminiAPI(prompt, true);
+
+            if (result && result.error === 'LOCAL_PREVIEW') {
+                displayResultInModal("Feature Unavailable in Preview", "<p>AI features are disabled in this local preview because they require a secure server connection.</p><p><strong>This is expected behavior.</strong> Once you deploy this site to Netlify, these features will work correctly.</p>");
+                return;
+            }
+
+            if (result) {
+                try {
+                    const recipe = JSON.parse(result);
+                    let htmlContent = `<h2>${recipe.recipeName}</h2>`;
+                    htmlContent += `<p><em>${recipe.description}</em></p>`;
+                    htmlContent += `<h3>Ingredients</h3><ul>${recipe.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>`;
+                    htmlContent += `<h3>Instructions</h3><ol>${recipe.instructions.map(i => `<li>${i}</li>`).join('')}</ol>`;
+                    if (recipe.nutrition) {
+                        htmlContent += `<div class="nutrition-summary">`;
+                        htmlContent += `<h3>Nutrition Facts (Estimated)</h3>`;
+                        htmlContent += `<p><strong>Calories:</strong> ${recipe.nutrition.calories}<br>`;
+                        htmlContent += `<strong>Protein:</strong> ${recipe.nutrition.protein}<br>`;
+                        htmlContent += `<strong>Carbs:</strong> ${recipe.nutrition.carbs}<br>`;
+                        htmlContent += `<strong>Fat:</strong> ${recipe.nutrition.fat}</p>`;
+                        htmlContent += `</div>`;
+                    }
+                    displayResultInModal("✨ Your Custom Recipe", htmlContent);
+                } catch (e) {
+                     displayResultInModal("Error", "<p>Sorry, there was an issue formatting the recipe. Please try again.</p>");
+                }
+            } else {
+                displayResultInModal("Error", "<p>Sorry, I couldn't generate a recipe right now. Please try again later.</p>");
+            }
+        });
+
+    </script>
+</body>
+</html>
