@@ -1,5 +1,5 @@
 // Using node-fetch for compatibility with Netlify Functions environment
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 exports.handler = async (event) => {
   // Only allow POST requests
@@ -16,7 +16,7 @@ exports.handler = async (event) => {
     }
     
     if (!prompt) {
-        return { statusCode: 400, body: 'Prompt is required.' };
+      return { statusCode: 400, body: 'Prompt is required.' };
     }
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
@@ -64,16 +64,12 @@ exports.handler = async (event) => {
 
     const result = await response.json();
 
-    if (result.candidates && result.candidates.length > 0 &&
-        result.candidates[0].content && result.candidates[0].content.parts &&
-        result.candidates[0].content.parts.length > 0) {
-      
+    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
       const text = result.candidates[0].content.parts[0].text;
       return {
         statusCode: 200,
         body: JSON.stringify({ text })
       };
-
     } else {
       console.error('Invalid response structure from Gemini API:', result);
       return { statusCode: 500, body: 'Invalid response structure from API.' };
